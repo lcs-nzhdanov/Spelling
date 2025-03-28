@@ -18,6 +18,10 @@ struct QuizView: View {
     // The outcome
     @State var currentOutcome: Outcome = .undetermined
     
+    // An array to store results of user's guesses
+    @State var history: [Result] = [] // empty array
+    
+    
     // MARK: Computed properties
     var body: some View {
         
@@ -35,10 +39,22 @@ struct QuizView: View {
                 Text(currentOutcome.rawValue)
             }
             // Make it possible to check the guess made
-            Button {
-                checkGuess()
-            } label: {
-                Text("Submit")
+            
+            
+            HStack {
+                
+                Button {
+                    checkGuess()
+                } label: {
+                    Text("Submit")
+                }
+                
+                Button {
+                    newWord()
+                } label: {
+                    Text("New word")
+                }
+
             }
 
         }
@@ -55,6 +71,26 @@ struct QuizView: View {
             print("Incorrect")
             currentOutcome = .incorrect
         }
+    }
+    
+    func newWord() {
+        
+        // Add the current result to the history
+        history.insert(
+            Result(
+                item: currentItem,
+                guessProvided: userGuess,
+                outcome: currentOutcome
+            ),
+            at: 0
+        )
+        
+        // DEBUG: What is in the history array?
+        print(history)
+        
+        currentItem = itemsToSpell.randomElement()!
+        userGuess = ""
+        currentOutcome = .undetermined
     }
 }
 
