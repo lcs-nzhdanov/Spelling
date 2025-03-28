@@ -25,39 +25,62 @@ struct QuizView: View {
     // MARK: Computed properties
     var body: some View {
         
-        VStack {
-            Image(currentItem.imageName)
-                .resizable()
-                .scaledToFit()
+        HStack {
             
-            HStack {
+            // Left Side
+            VStack {
+                Image(currentItem.imageName)
+                    .resizable()
+                    .scaledToFit()
                 
-                // Allow the user to input their guess
-                TextField("Enter the name of the item", text: $userGuess)
-                
-                // Show outcome (shows the string attached to each case in the enumeration)
-                Text(currentOutcome.rawValue)
-            }
-            // Make it possible to check the guess made
-            
-            
-            HStack {
-                
-                Button {
-                    checkGuess()
-                } label: {
-                    Text("Submit")
+                HStack {
+                    
+                    // Allow the user to input their guess
+                    TextField("Enter the name of the item", text: $userGuess)
+                    
+                    // Show outcome (shows the string attached to each case in the enumeration)
+                    Text(currentOutcome.rawValue)
                 }
+                // Make it possible to check the guess made
                 
-                Button {
-                    newWord()
-                } label: {
-                    Text("New word")
+                
+                HStack {
+                    
+                    Button {
+                        checkGuess()
+                    } label: {
+                        Text("Submit")
+                    }
+                    
+                    Button {
+                        newWord()
+                    } label: {
+                        Text("New word")
+                    }
+
                 }
 
             }
-
+            
+            // Right Side
+            List(history) { currentResult in
+                
+                HStack {
+                    Image(currentResult.item.imageName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 50)
+                    
+                    Text(currentResult.guessProvided)
+                    
+                    Spacer()
+                    
+                    Text(currentResult.outcome.rawValue)
+                }
+            }
         }
+        
+        
         
     }
     
